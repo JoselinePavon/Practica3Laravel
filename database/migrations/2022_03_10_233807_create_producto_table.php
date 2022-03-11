@@ -14,10 +14,12 @@ class  CreateProductoTable extends Migration
     public function up()
     {
         Schema::create('Producto', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('nombre');
-            $table->string('descripcion');
-            $table->string('precio');
+            $table->bigIncrements('id_producto');
+            $table->string ('nombre', 45);
+            $table->string('descripcion',45);
+            $table->decimal('precio');
+            $table->bigInteger('id_marca')->unsigned()->nullable();
+            $table->foreign('id_marca','fk_Productos')->references('id')->on('Marca');
 
         });
     }
@@ -29,6 +31,6 @@ class  CreateProductoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('producto');
+        Schema::dropIfExists('Producto');
     }
 }

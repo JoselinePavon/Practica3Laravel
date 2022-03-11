@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Marca;
+use App\Models\Productos;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // User::factory(10)->create();
+        Marca::factory()->count(50)->create();
+        Productos::factory()->count(50)->create();
     }
 }

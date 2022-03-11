@@ -15,7 +15,7 @@ class CreateMarcaTable extends Migration
     {
         Schema::create('Marca', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('Marca');
+            $table->string('Marca',45);
         });
     }
 
