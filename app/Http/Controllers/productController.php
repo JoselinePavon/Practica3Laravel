@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Marca;
 use App\Models\Productos;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -44,10 +46,10 @@ class productController extends Controller
             // relacion de marca
             ->join('Marca', 'Producto.id_marca', '=', 'Marca.id')
             ->select('Marca.*', 'Producto.*')
-            ->paginate(5);
-
+            ->Paginate(5);
 
         return view('layouts.list', compact('productos'));
+
     }
     //Formulario para Update producto
     public function updateForm(Request $request,$id){
@@ -89,4 +91,47 @@ class productController extends Controller
         $productos = Productos::findOrFail($id)->delete();
         return back()->with('productoEliminado', 'Producto eliminado');
     }
+
+    //excepciones
+    public function store(Request $request){
+        $data = request()->validate([
+            'nombre' => 'required|max:45',
+            'descripcion' => 'required|max:45',
+            'precio' => 'required',
+            'marca'=>'required'
+        ], [
+            'nombre.required' => 'El campo nombre no debe estar vacio.',
+            'descripcion.required' => 'El campo descripcion no debe estar vacio.',
+            'precio.required' => 'El campo precio no debe estar vacio.',
+
+            'nombre.max' => 'El nombre no puede tener más 45 caracteres.',
+            'descripcion.max' => 'La descripcion del producto  no puede tener más 45 caracteres.',
+            'precio.max' => 'El precio del producto no puede tener más 10 digitos.',
+        ]); // termina el bloque de validacion
+
+        try {
+            $producto = Productos::create([
+                'nombre' => $data['nombre'],
+                'descripcion' => $data['descripcion'],
+                'precio' => $data['precio'],
+                'marca' => $data['id_marca'],
+            ]);
+        } catch (\Exception $exception) {
+            $message=$exception->getMessage();
+            $tipoError=" Excepción General del Sistema ";
+            return view('exceptions.exceptions', compact('message', 'tipoError'));
+        }catch (QueryException $queryException){
+            $message= $queryException->getMessage();
+            $tipoError=" Excepción de Base de Datos ";
+            return view('errors.404', compact('message', 'tipoError'));
+        }catch (ModelNotFoundException $modelNotFoundException){
+            $message=$modelNotFoundException->getMessage();
+            $tipoError=" Excepción en el Servidor ";
+            return view('errors.404', compact('message', 'tipoError'));
+        }
+
+
+        return redirect()->route('producto.product')->with('success', 'Registro realizado exitosamente');
+    }
+
 }

@@ -14,6 +14,10 @@ class Marca extends Model
     protected $fillable=[
          'marca',
     ];
+    public function producto(){
+        return $this->hasOne(Productos::class);
+    }
+
 
     protected $primaryKey='id';
 

@@ -18,22 +18,22 @@
 
 
                             <div class="row form-group">
-                                <label for="" class="col-3">Nombre</label>
-                                <input type="text" name="nombre" class="form-control col-md-8" value="{{ $producto->nombre }}">
+                                <label for="" class="col-2"><i class="fas fa-glass-whiskey"style="font-size:50px;"></i></label>
+                                <input type="text" name="nombre" class="form-control col-md-9" value="{{ $producto->nombre }}">
                             </div>
                             <div class="row form-group">
-                                <label for="" class="col-3">Descripcion</label>
-                                <input type="text" name="descripcion" class="form-control col-md-8" value="{{ $producto->descripcion }}">
-                            </div>
-
-                            <div class="row form-group">
-                                <label for="" class="col-3">Preico</label>
-                                <input type="text" name="precio" class="form-control col-md-8" value="{{ $producto->precio }}">
+                                <label for="" class="col-2"><i class="fas fa-file-alt" style=font-size:50px;"></i></label>
+                                <input type="text" name="descripcion" class="form-control col-md-9" value="{{ $producto->descripcion }}">
                             </div>
 
                             <div class="row form-group">
-                                <label for="" class="col-3">Marca</label>
-                                <select name="marca" class="form-control col-md-8" >
+                                <label for="" class="col-2"><i class="far fa-money-bill-alt" style="font-size:50px;" ></i></label>
+                                <input type="text" name="precio" class="form-control col-md-9" value="{{ $producto->precio }}">
+                            </div>
+
+                            <div class="row form-group">
+                                <label for="" class="col-2"><i class="fas fa-glass-cheers"style="font-size:50px;"></i></label>
+                                <select name="marca" class="form-control col-md-9" >
                                     <option value="" class="text-center"> Seleccione la marca </option>
 
                                     @foreach( $marcas as $marca)
@@ -43,8 +43,8 @@
                             </div>
 
                             <div class="row form-group">
-                                <button type="submit" class="btn btn-outline-success col-md-4 offset-2 mr-3">Modificar</button>
-                                <a class="btn btn-outline-danger btn-xs col-md-4" href=" {{ url('/') }}">Cancelar</a>
+                                <button id="modificar" type="submit" class="btn btn-outline-success col-md-4 offset-2 mr-3" onclick="modificarAlert(event)" > <i class="fas fa-marker"></i> Modificar</button>
+                                <a class="btn btn-outline-danger btn-xs col-md-4" href=" {{ url('/') }}"><i class="fas fa-ban"></i> Cancelar</a>
                             </div>
 
                         </div>
@@ -58,3 +58,27 @@
 
     </div>
 @endsection
+<!-- Alert Actualizar Producto SweetAlert2 -->
+@section('js')
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <script>
+        function modificarAlert(e){
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Producto Actualizado',
+                showConfirmButton: false,
+                timer: 100000,
+            }).then((result) => {
+                if (result.isConfirmed)
+               {
+                    $('#modificar').submit();
+                }
+            })
+        }
+    </script>
+
+@endsection
+

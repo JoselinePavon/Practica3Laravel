@@ -15,11 +15,14 @@ class Productos extends Model
         'nombre', 'descripcion','precio','id_marca',
     ];
 
+    public function marca(){
+        return $this->belongsTo(Marca::class);
+    }
     protected $primaryKey='id_producto';
 
     protected static function newFactory(): ProductoFactory
     {
         return ProductoFactory::new();
     }
-}
 
+}
